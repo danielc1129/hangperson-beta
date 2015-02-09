@@ -23,20 +23,23 @@ class HangpersonGame
   	# if letter is empty, nil or not a letter
   	if not letter =~ /[[:alpha:]]/
   		raise ArgumentError, "Input needs to be a letter"
+  	end
 
   	# if letter is repeated
-  	elsif self.guesses.include? letter or self.wrong_guesses.include? letter
+  	if self.guesses.include? letter or self.wrong_guesses.include? letter
   		return false
+  	end
 
   	# if letter is in the word modify guesses
   	# but don't modify wrong_guesses
-  	elsif self.word.include? letter
+  	if self.word.include? letter
   		self.guesses += letter
   		return true
+  	end
   	
   	# if letter is not in the word, modify 
   	# wrong_guesses but not guesses
-  	else !self.word.include? letter
+  	if !self.word.include? letter
   		self.wrong_guesses += letter
   		return true
   	end
@@ -46,9 +49,9 @@ class HangpersonGame
   def word_with_guesses
   	display = ''
   	iterword = self.word.dup
-  	iterword.split("").each do |i|
-  		if self.guesses.include? iterword[i]
-  			display += iterword[i]
+  	iterword.split("").each do |letter|
+  		if self.guesses.include? letter
+  			display += letter
   		else
   			display += '-'
   		end
@@ -59,7 +62,7 @@ class HangpersonGame
   #checks the game status 
   def check_win_or_lose
   	display = word_with_guesses 
-  	if self.wrong_guesses.size > 6
+  	if self.wrong_guesses.length >= 7
   		return :lose 
   	elsif display == self.word
   		return :win 
